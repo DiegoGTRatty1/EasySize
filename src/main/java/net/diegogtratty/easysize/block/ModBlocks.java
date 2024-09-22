@@ -1,12 +1,12 @@
 package net.diegogtratty.easysize.block;
 
 import net.diegogtratty.easysize.EasySize;
+import net.diegogtratty.easysize.block.custom.SizeshiftingStationBlock;
 import net.diegogtratty.easysize.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,7 +20,7 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, EasySize.MODID);
 
     public static final RegistryObject<Block> SIZESHIFTING_STATION = registerBlock("sizeshifting_station",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).sound(SoundType.ANVIL)));
+            () -> new SizeshiftingStationBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

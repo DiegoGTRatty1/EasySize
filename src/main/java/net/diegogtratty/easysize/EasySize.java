@@ -2,8 +2,12 @@ package net.diegogtratty.easysize;
 
 import com.mojang.logging.LogUtils;
 import net.diegogtratty.easysize.block.ModBlocks;
+import net.diegogtratty.easysize.block.entity.ModBlockEntities;
 import net.diegogtratty.easysize.item.ModCreativeModTabs;
 import net.diegogtratty.easysize.item.ModItems;
+import net.diegogtratty.easysize.screen.ModMenuTypes;
+import net.diegogtratty.easysize.screen.SizeshiftingStationScreen;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -31,6 +35,9 @@ public class EasySize {
         ModCreativeModTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+
+        ModMenuTypes.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -65,7 +72,7 @@ public class EasySize {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
+            MenuScreens.register(ModMenuTypes.SIZESHIFTING_STATION_MENU.get(), SizeshiftingStationScreen::new);
         }
     }
 }
