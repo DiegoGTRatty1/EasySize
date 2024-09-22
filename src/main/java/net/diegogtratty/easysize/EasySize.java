@@ -1,6 +1,9 @@
 package net.diegogtratty.easysize;
 
 import com.mojang.logging.LogUtils;
+import net.diegogtratty.easysize.item.ModCreativeModTabs;
+import net.diegogtratty.easysize.item.ModItems;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -24,6 +27,9 @@ public class EasySize {
     public EasySize() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModCreativeModTabs.register(modEventBus);
+        ModItems.register(modEventBus);
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -40,7 +46,10 @@ public class EasySize {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.SIZECORE);
+            event.accept(ModItems.WIRELESS_SIZESHIFTER);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
