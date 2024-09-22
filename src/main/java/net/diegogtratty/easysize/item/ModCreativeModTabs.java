@@ -1,6 +1,7 @@
 package net.diegogtratty.easysize.item;
 
 import net.diegogtratty.easysize.EasySize;
+import net.diegogtratty.easysize.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -22,6 +23,7 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.SIZECORE.get());
                         pOutput.accept(ModItems.WIRELESS_SIZESHIFTER.get());
 
+                        pOutput.accept(ModBlocks.SIZESHIFTING_STATION.get());
                     })
                     .build());
 

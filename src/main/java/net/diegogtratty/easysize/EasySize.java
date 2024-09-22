@@ -1,6 +1,7 @@
 package net.diegogtratty.easysize;
 
 import com.mojang.logging.LogUtils;
+import net.diegogtratty.easysize.block.ModBlocks;
 import net.diegogtratty.easysize.item.ModCreativeModTabs;
 import net.diegogtratty.easysize.item.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -29,6 +30,7 @@ public class EasySize {
 
         ModCreativeModTabs.register(modEventBus);
         ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
