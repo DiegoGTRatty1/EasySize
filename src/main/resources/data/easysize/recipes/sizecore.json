@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "bcr",
+    "edp",
+    "olo"
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:brown_mushroom"
+    },
+    "c": {
+      "item": "minecraft:cake"
+    },
+    "r": {
+      "item": "minecraft:red_mushroom"
+    },
+    "l": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "e": {
+      "item": "minecraft:ender_pearl"
+    },
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "p": {
+      "item": "minecraft:blaze_powder"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "item": "easysize:sizecore",
+    "count": 1
+  }
+}

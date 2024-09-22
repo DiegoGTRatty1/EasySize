@@ -22,7 +22,6 @@ public class ModCreativeModTabs {
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.SIZECORE.get());
                         pOutput.accept(ModItems.WIRELESS_SIZESHIFTER.get());
-
                         pOutput.accept(ModBlocks.SIZESHIFTING_STATION.get());
                     })
                     .build());
