@@ -4,6 +4,7 @@ plugins {
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = mod_version
@@ -116,6 +117,15 @@ repositories {
     maven { // JEI
         url "https://maven.blamejared.com"
     }
+    maven { // meka
+        url "https://modmaven.dev/"
+    }
+    maven { // pehkui
+        url "https://jitpack.io"
+    }
+    maven {
+        url "https://repo.spongepowered.org/repository/maven-public/"
+    }
 }
 
 dependencies {
@@ -136,11 +146,24 @@ dependencies {
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+    compileOnly "mekanism:Mekanism:${mekanism_version}:api"
+
+    // If you want to test/use Mekanism & its modules during `runClient` invocation, use the following
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}")// Mekanism
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:additions")// Mekanism: Additions
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:generators")// Mekanism: Generators
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:tools")// Mekanism: Tools
+
+    implementation fg.deobf("com.github.Virtuoel:Pehkui:${pehkui_version}")
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
+
+apply plugin: "org.spongepowered.mixin"
 
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.

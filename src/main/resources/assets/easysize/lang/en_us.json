@@ -10,5 +10,6 @@
   "gui.easysize.sizeshifting_block_screen.button.small": "Small",
   "gui.easysize.sizeshifting_block_screen.button.normal": "Default",
   "gui.easysize.sizeshifting_block_screen.button.big": "Tall",
-  "gui.easysize.sizeshifting_block_screen.button.custom": "Custom"
+  "gui.easysize.sizeshifting_block_screen.button.custom": "Custom",
+  "gui.easysize.sizeshifting_block_screen.textfield.custom": "Insert Custom Height"
 }
