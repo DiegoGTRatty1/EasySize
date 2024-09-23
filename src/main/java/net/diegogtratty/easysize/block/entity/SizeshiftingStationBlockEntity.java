@@ -5,10 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
-public class SizeshiftingStationBlockEntity extends BlockEntity implements MenuProvider {
+public class SizeshiftingStationBlockEntity extends BlockEntity {
 
     public static final String ENERGY_TAG = "Energy";
     public static final int MAXTRANSFER = 1;
@@ -63,7 +59,6 @@ public class SizeshiftingStationBlockEntity extends BlockEntity implements MenuP
         energyHandler.invalidate();
     }
 
-    @Override
     public Component getDisplayName() {
         return Component.translatable("block.easysize.sizeshifting_station");
     }
@@ -102,10 +97,5 @@ public class SizeshiftingStationBlockEntity extends BlockEntity implements MenuP
             return energyHandler.cast();
         }
         return super.getCapability(cap, side);
-    }
-
-    @Override
-    public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return null;
     }
 }
