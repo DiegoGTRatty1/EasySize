@@ -5,18 +5,13 @@ import net.diegogtratty.easysize.block.ModBlocks;
 import net.diegogtratty.easysize.block.entity.ModBlockEntities;
 import net.diegogtratty.easysize.item.ModCreativeModTabs;
 import net.diegogtratty.easysize.item.ModItems;
-import net.diegogtratty.easysize.screen.ModMenuTypes;
-import net.diegogtratty.easysize.screen.SizeshiftingStationScreen;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -37,7 +32,7 @@ public class EasySize {
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
 
-        ModMenuTypes.register(modEventBus);
+        //ModMenuTypes.register(modEventBus);
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -65,14 +60,5 @@ public class EasySize {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 
-    }
-
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            MenuScreens.register(ModMenuTypes.SIZESHIFTING_STATION_MENU.get(), SizeshiftingStationScreen::new);
-        }
     }
 }

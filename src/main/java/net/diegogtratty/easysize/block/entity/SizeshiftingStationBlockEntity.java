@@ -1,6 +1,6 @@
 package net.diegogtratty.easysize.block.entity;
 
-import net.diegogtratty.easysize.screen.SizeshiftingStationMenu;
+import net.diegogtratty.easysize.utility.AdaptedEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -9,19 +9,48 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
+
 public class SizeshiftingStationBlockEntity extends BlockEntity implements MenuProvider {
 
-    protected final ContainerData data;
+    public static final String ENERGY_TAG = "Energy";
+    public static final int MAXTRANSFER = 1;
+    public static final int CAPACITY = 4096;
+
+    private final EnergyStorage energy = createEnergyStorage();
+
+    private final LazyOptional<IEnergyStorage> energyHandler = LazyOptional.of(() -> new AdaptedEnergyStorage(energy) {
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            return 0;
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate) {
+            return 0;
+        }
+
+        @Override
+        public boolean canExtract() {
+            return false;
+        }
+
+        @Override
+        public boolean canReceive() {
+            return false;
+        }
+    });
 
     public SizeshiftingStationBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.SIZESHIFTING_STATION_BE.get(), pPos, pBlockState);
@@ -29,23 +58,9 @@ public class SizeshiftingStationBlockEntity extends BlockEntity implements MenuP
     }
 
     @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ENERGY) {
-            return lazyEnergyHandler.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        lazyEnergyHandler = LazyOptional.of(() -> energyHandler);
-    }
-
-    @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        lazyEnergyHandler.invalidate();
+        energyHandler.invalidate();
     }
 
     @Override
@@ -53,25 +68,44 @@ public class SizeshiftingStationBlockEntity extends BlockEntity implements MenuP
         return Component.translatable("block.easysize.sizeshifting_station");
     }
 
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new SizeshiftingStationMenu(pContainerId, pPlayerInventory, this, this.data);
+    public void tick() {
+        boolean powered = energy.getEnergyStored() > 0;
+        if (powered != getBlockState().getValue(BlockStateProperties.POWERED)) {
+            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, powered));
+        }
+    }
+
+    public int getStoredPower() {
+        return energy.getEnergyStored();
     }
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {
-        pTag.put("energy", energyHandler.serializeNBT());
+        pTag.put(ENERGY_TAG, energy.serializeNBT());
         super.saveAdditional(pTag);
     }
 
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
-        energyHandler.deserializeNBT(pTag.getCompound("energy"));
+        energy.deserializeNBT(pTag.get(ENERGY_TAG));
     }
 
-    public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        //do the energy fill here maybe
+    @Nonnull
+    private EnergyStorage createEnergyStorage() {
+        return new EnergyStorage(CAPACITY, MAXTRANSFER, MAXTRANSFER);
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ENERGY) {
+            return energyHandler.cast();
+        }
+        return super.getCapability(cap, side);
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package net.diegogtratty.easysize.screen;
+/*package net.diegogtratty.easysize.screen;
 
 import net.diegogtratty.easysize.EasySize;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -9,8 +9,6 @@ import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.rmi.registry.Registry;
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
@@ -26,4 +24,4 @@ public class ModMenuTypes {
     public static void register(IEventBus eventBus) {
         MENUS.register(eventBus);
     }
-}
+}*/

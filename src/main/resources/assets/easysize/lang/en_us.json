@@ -4,5 +4,11 @@
 
   "block.easysize.sizeshifting_station": "Size Shifting Station",
 
-  "creativetab.easysize_tab": "EasySize Tab"
+  "creativetab.easysize_tab": "EasySize Tab",
+
+  "gui.easysize.sizeshifting_station_gui": "Size Shifting Station",
+  "gui.easysize.sizeshifting_block_screen.button.small": "Small",
+  "gui.easysize.sizeshifting_block_screen.button.normal": "Default",
+  "gui.easysize.sizeshifting_block_screen.button.big": "Tall",
+  "gui.easysize.sizeshifting_block_screen.button.custom": "Custom"
 }
