@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.awt.*;
+import java.util.function.Supplier;
 
 public class SizeshiftingBlockScreen extends Screen {
     private static final Component TITLE =
@@ -53,9 +54,9 @@ public class SizeshiftingBlockScreen extends Screen {
         this.topPos = (this.height - this.imageHeight) / 2;
 
         Level level = this.minecraft.level;
-        if (level == null) {
+        /*if (level == null) {
             return;
-        }
+        }*/
 
         BlockEntity be = level.getBlockEntity(this.position);
         if (be instanceof SizeshiftingStationBlockEntity blockEntity) {
@@ -91,9 +92,9 @@ public class SizeshiftingBlockScreen extends Screen {
         renderBackground(graphics);
         graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         super.render(graphics, mouseX, mouseY, partialTicks);
-        graphics.drawString(this.minecraft.font, TITLE, this.leftPos + 8, this.topPos + 6, 0x404040, false);
+        graphics.drawString(this.font, TITLE, this.leftPos + 8, this.topPos + 6, 0x404040, false);
 
-        graphics.drawString(this.font, "Current Scale: %d".formatted(this.blockEntity.getStoredPower()), this.leftPos + 44, this.topPos + 112, 0x404040, false);
+        graphics.drawString(this.font, "Current Scale: %d".formatted(this.blockEntity.getEnergy()), this.leftPos + 44, this.topPos + 112, 0x404040, false);
         graphics.drawString(this.font, "Power Supply [||||||||||]", this.leftPos + 8, this.topPos + 152, 0x404040, false);
     }
 
