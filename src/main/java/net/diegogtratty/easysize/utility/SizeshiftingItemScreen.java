@@ -3,7 +3,6 @@ package net.diegogtratty.easysize.utility;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.diegogtratty.easysize.EasySize;
-import net.diegogtratty.easysize.block.entity.SizeshiftingStationBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -11,16 +10,13 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 
-public class SizeshiftingBlockScreen extends Screen {
+public class SizeshiftingItemScreen extends Screen {
 
     private final Minecraft mc;
     private float playerScale;
@@ -41,22 +37,19 @@ public class SizeshiftingBlockScreen extends Screen {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(EasySize.MODID, "textures/gui/sizeshifting_station_gui.png");
 
-    private final BlockPos position;
     private final int imageWidth, imageHeight;
 
-    private SizeshiftingStationBlockEntity blockEntity;
     private int leftPos, topPos;
 
     private Button smallButton, normalButton, bigButton, customButton;
     private EditBox customSizeInput;
 
-    public SizeshiftingBlockScreen(BlockPos position) {
+    public SizeshiftingItemScreen() {
 
         super(TITLE);
 
         this.mc = Minecraft.getInstance();
 
-        this.position = position;
         this.imageWidth = 176;
         this.imageHeight = 166;
     }
@@ -68,20 +61,9 @@ public class SizeshiftingBlockScreen extends Screen {
         this.leftPos = (this.width - this.imageWidth) / 2;
         this.topPos = (this.height - this.imageHeight) / 2;
 
-        Level level = this.minecraft.level;
-        if (level == null) {
-            return;
-        }
-
-        BlockEntity be = level.getBlockEntity(this.position);
-        if (be instanceof SizeshiftingStationBlockEntity blockEntity) {
-            this.blockEntity = blockEntity;
-        } else {
-            return;
-        }
         this.smallButton = addRenderableWidget(
                 Button.builder(SMALL_BUTTON, this::handleSmallButton)
-                .bounds(this.leftPos + 8, this.topPos + 20, 60, 20)
+                        .bounds(this.leftPos + 8, this.topPos + 20, 60, 20)
                         .tooltip(Tooltip.create(SMALL_BUTTON))
                         .build());
         this.normalButton = addRenderableWidget(
