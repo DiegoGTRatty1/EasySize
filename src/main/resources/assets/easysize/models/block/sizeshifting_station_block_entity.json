@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/orientable",
   "textures": {
-    "front": "easysize:block/sizeshifting_station",
+    "front": "easysize:block/sizeshifting_station_powered",
     "side": "minecraft:block/furnace_side",
     "top": "minecraft:block/furnace_top"
   }

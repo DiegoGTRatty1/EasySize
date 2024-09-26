@@ -1,6 +1,6 @@
 /*package net.diegogtratty.easysize.screen;
 
-import net.diegogtratty.easysize.block.ModBlocks;
+import net.diegogtratty.easysize.init.BlockRegistration;
 import net.diegogtratty.easysize.block.entity.SizeshiftingStationBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -56,6 +56,6 @@ public class SizeshiftingStationMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.SIZESHIFTING_STATION.get());
+                pPlayer, BlockRegistration.SIZESHIFTING_STATION.get());
     }
 }*/

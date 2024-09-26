@@ -123,6 +123,12 @@ repositories {
     maven { // pehkui
         url "https://jitpack.io"
     }
+    maven { // jade
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
     maven {
         url "https://repo.spongepowered.org/repository/maven-public/"
     }
@@ -155,6 +161,8 @@ dependencies {
     runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:tools")// Mekanism: Tools
 
     implementation fg.deobf("com.github.Virtuoel:Pehkui:${pehkui_version}")
+
+    //implementation fg.deobf("curse.maven:jade-324717:${jade_version}")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 

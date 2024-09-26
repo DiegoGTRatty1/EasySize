@@ -1,7 +1,9 @@
 {
   "item.easysize.sizecore": "Size Core",
+  "item.easysize.muffin": "Muffin",
   "item.easysize.wireless_sizeshifter": "Wireless Size Shifter",
 
+  "block.easysize.fake_furnace": "Fake Furnace",
   "block.easysize.sizeshifting_station": "Size Shifting Station",
 
   "creativetab.easysize_tab": "EasySize Tab",

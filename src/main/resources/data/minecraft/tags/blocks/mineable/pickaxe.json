@@ -1,5 +1,7 @@
 {
+  "replace": false,
   "values": [
+    "easysize:fake_furnace",
     "easysize:sizeshifting_station"
   ]
 }
