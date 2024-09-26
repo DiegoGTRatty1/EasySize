@@ -53,8 +53,8 @@ public class SizeshiftingStationBlock extends HorizontalDirectionalBlock impleme
         if (!level.isClientSide && hand == InteractionHand.MAIN_HAND) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof SizeshiftingStationBlockEntity blockEntity) {
-                int counter = blockEntity.incrementCounter();
-                player.sendSystemMessage(Component.literal("Hell yeah, RIGHT number %d".formatted(counter)));
+                int secondsExisted = blockEntity.incrementCounter();
+                player.sendSystemMessage(Component.literal("Hell yeah, RIGHT number %d".formatted(secondsExisted)));
                 return InteractionResult.sidedSuccess(level.isClientSide());
             }
         }
