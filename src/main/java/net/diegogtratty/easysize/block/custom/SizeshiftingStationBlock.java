@@ -1,6 +1,7 @@
 package net.diegogtratty.easysize.block.custom;
 
 import net.diegogtratty.easysize.block.entity.SizeshiftingStationBlockEntity;
+import net.diegogtratty.easysize.block.entity.utility.TickableBlockEntity;
 import net.diegogtratty.easysize.init.BlockEntityRegistration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,6 +15,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
@@ -33,6 +36,12 @@ public class SizeshiftingStationBlock extends HorizontalDirectionalBlock impleme
         return BlockEntityRegistration.SIZESHIFTING_STATION_BLOCK_ENTITY.get().create(pos, state);
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
+        return TickableBlockEntity.getTickerHelper(level);
+    }
+
     @Override
     protected void createBlockStateDefinition(@NotNull StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
@@ -46,7 +55,6 @@ public class SizeshiftingStationBlock extends HorizontalDirectionalBlock impleme
             if (be instanceof SizeshiftingStationBlockEntity blockEntity) {
                 int counter = blockEntity.incrementCounter();
                 player.sendSystemMessage(Component.literal("Hell yeah, RIGHT number %d".formatted(counter)));
-                //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientHooks.openSizeshiftingBlockScreen(pos));
                 return InteractionResult.sidedSuccess(level.isClientSide());
             }
         }

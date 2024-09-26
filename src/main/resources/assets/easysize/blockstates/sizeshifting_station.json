@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "easysize:block/sizeshifting_station"
-    }
+    "facing=north": { "model": "easysize:block/sizeshifting_station" },
+    "facing=east": { "model": "easysize:block/sizeshifting_station", "y":  90 },
+    "facing=south": { "model": "easysize:block/sizeshifting_station", "y":  180 },
+    "facing=west": { "model": "easysize:block/sizeshifting_station", "y":  270 }
   }
 }
