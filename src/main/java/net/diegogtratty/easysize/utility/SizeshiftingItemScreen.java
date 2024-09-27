@@ -94,6 +94,8 @@ public class SizeshiftingItemScreen extends Screen {
         String currentScale = "Current Scale: " + playerScale;
 
         renderBackground(graphics);
+
+        //everything else
         graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         super.render(graphics, mouseX, mouseY, partialTicks);
         graphics.drawString(this.font, TITLE, this.leftPos + 8, this.topPos + 6, 0x404040, false);

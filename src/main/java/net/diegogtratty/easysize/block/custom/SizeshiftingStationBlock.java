@@ -3,6 +3,9 @@ package net.diegogtratty.easysize.block.custom;
 import net.diegogtratty.easysize.block.entity.SizeshiftingStationBlockEntity;
 import net.diegogtratty.easysize.block.entity.utility.TickableBlockEntity;
 import net.diegogtratty.easysize.init.BlockEntityRegistration;
+import net.diegogtratty.easysize.utility.ClientHooks;
+import net.diegogtratty.easysize.utility.SizeshiftingBlockScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -20,6 +23,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,22 +53,22 @@ public class SizeshiftingStationBlock extends HorizontalDirectionalBlock impleme
         builder.add(FACING);
     }
 
-    @Override
-    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        if (!level.isClientSide && hand == InteractionHand.MAIN_HAND) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof SizeshiftingStationBlockEntity blockEntity) {
-                int secondsExisted = blockEntity.incrementCounter();
-                player.sendSystemMessage(Component.literal("Hell yeah, RIGHT number %d".formatted(secondsExisted)));
-                return InteractionResult.sidedSuccess(level.isClientSide());
-            }
-        }
-        return InteractionResult.FAIL;
-    }
-
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+        if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
+            if (!level.isClientSide()) return InteractionResult.SUCCESS;
+
+                BlockEntity be = level.getBlockEntity(pos);
+                if (be instanceof SizeshiftingStationBlockEntity) {
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientHooks.openSizeshiftingBlockScreen(pos));
+                }
+
+            return InteractionResult.FAIL;
     }
 }

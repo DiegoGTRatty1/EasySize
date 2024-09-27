@@ -4,23 +4,24 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.diegogtratty.easysize.EasySize;
 import net.diegogtratty.easysize.block.entity.SizeshiftingStationBlockEntity;
+import net.diegogtratty.easysize.block.menu.SizeshiftingStationMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-
-public class SizeshiftingBlockScreen extends Screen {
+public class SizeshiftingBlockScreen extends AbstractContainerScreen<SizeshiftingStationMenu> {
 
     private final Minecraft mc;
     private float playerScale;
@@ -41,7 +42,6 @@ public class SizeshiftingBlockScreen extends Screen {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(EasySize.MODID, "textures/gui/sizeshifting_station_gui.png");
 
-    private final BlockPos position;
     private final int imageWidth, imageHeight;
 
     private SizeshiftingStationBlockEntity blockEntity;
@@ -50,18 +50,16 @@ public class SizeshiftingBlockScreen extends Screen {
     private Button smallButton, normalButton, bigButton, customButton;
     private EditBox customSizeInput;
 
-    public SizeshiftingBlockScreen(BlockPos position) {
-
-        super(TITLE);
+    public SizeshiftingBlockScreen(SizeshiftingStationMenu menu, Inventory inventory, Component titlee) {
+        super(menu, inventory, titlee);
 
         this.mc = Minecraft.getInstance();
 
-        this.position = position;
         this.imageWidth = 176;
         this.imageHeight = 166;
     }
 
-    @Override
+    /*@Override
     protected void init() {
         super.init();
 
@@ -101,22 +99,50 @@ public class SizeshiftingBlockScreen extends Screen {
                         .build());
         this.customSizeInput = new EditBox(this.font, this.leftPos + 74, this.topPos + 87, 32, 18, CUSTOM_TEXT_INPUT);
         addRenderableWidget(customSizeInput);
+    }*/
+
+    @Override
+    protected void renderBg (GuiGraphics graphics, float v, int i, int i1) {
+        renderBackground(graphics);
+        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+
+        int energyScaled = this.menu.getEnergyStoredScaled();
+
+        // energy
+        graphics.fill(
+                this.leftPos + 115,
+                this.topPos + 20,
+                this.leftPos + 131,
+                this.topPos + 60,
+                0xFF555555
+        );
+        graphics.fill(
+                this.leftPos + 116,
+                this.topPos + 21 + (38 - energyScaled),
+                this.leftPos + 130,
+                this.topPos + 59,
+                0xFFCC2222
+        );
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-
-        Player player = mc.player;
-        playerScale = player.getScale();
-        playerScale = (int) playerScale;
-        String currentScale = "Current Scale: " + playerScale;
-
-        renderBackground(graphics);
-        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+    public void render (GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         super.render(graphics, mouseX, mouseY, partialTicks);
+        renderTooltip(graphics, mouseX, mouseY);
+
+        graphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+
         graphics.drawString(this.font, TITLE, this.leftPos + 8, this.topPos + 6, 0x404040, false);
 
-        graphics.drawString(this.font, currentScale, this.leftPos + 44, this.topPos + 112, 0x404040, false);
+        int energyStored = this.menu.getEnergy();
+        int maxEnergy = this.menu.getMaxEnergy();
+
+        Component textt = Component.literal("Energy: " + energyStored + " / " + maxEnergy);
+        if (isHovering(115, 20, 16, 40, mouseX, mouseY)) {
+            graphics.renderTooltip(this.font, textt, mouseX, mouseY);
+        }
+
+        graphics.drawString(this.font, "Current Scale: %d".formatted(this.blockEntity.getCurrentPlayerScale()), this.leftPos + 44, this.topPos + 112, 0x404040, false);
     }
 
     private void handleSmallButton(Button smallButton) {
@@ -160,7 +186,7 @@ public class SizeshiftingBlockScreen extends Screen {
             try {
                 dispatcher.execute(command, source);
             } catch (CommandSyntaxException e) {
-                mc.player.sendSystemMessage(Component.translatable("gui.easysize.sizeshifting_block_screen.button.big"));
+                mc.player.sendSystemMessage(Component.translatable("gui.easysize.sizeshifting_block_screen.wronginput"));
             }
         }
     }
